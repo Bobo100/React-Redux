@@ -6,6 +6,7 @@ export type item = {
 export type state = {
     itemList: item[],
 }
+
 export const initialState: state = {
     itemList: []
 }

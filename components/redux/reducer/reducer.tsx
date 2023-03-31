@@ -1,4 +1,3 @@
-import { combineReducers } from "@reduxjs/toolkit";
 import { action, ActionType } from "../action/actionType";
 import { initialState, state } from "../state/stateType";
 
