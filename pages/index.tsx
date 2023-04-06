@@ -29,12 +29,20 @@ function HomePage() {
                     <li className="p-3">中央化的狀態管理：Redux的Store可以集中管理所有的應用狀態，從而使應用的狀態管理更加清晰和易於維護。這可以避免在應用中出現多個狀態源的情況，因為Redux將所有的狀態存儲在一個統一的Store中。</li>
                     <li className="p-3">可預測的狀態變化：Redux使用純函數Reducer來處理狀態變化，這使得狀態變化變得可預測且容易測試。Reducer只是根據先前的狀態和一個操作來生成一個新的狀態，因此不會有副作用。</li>
                     <li className="p-3">易於開發人員協作：Redux提供了一些工具和技術，使得不同的開發人員可以方便地協作開發一個大型的應用。例如，Redux DevTools可以幫助開發人員跟蹤應用的狀態變化，以及可以使用中間件來定義和處理一系列的異步操作。</li>
+                    <li className="p-3">可移植性：Redux可以在不同的平台上使用，包括Web、React Native、Electron等。</li>
+                    <li className="p-3">可擴展性：Redux可以通過中間件來擴展其功能，例如，可以通過中間件來處理異步操作，或者將Redux的狀態存儲在本地存儲中。</li>
+                    <li className="p-3">Time Traveling：Redux DevTools可以幫助開發人員跟蹤應用的狀態變化，並且可以在不同的狀態之間進行切換，這使得開發人員可以更好地理解應用的狀態變化。</li>
                 </ul>
 
                 {/* 可預測的狀態變化：Redux使用純函數Reducer來處理狀態變化，這使得狀態變化變得可預測且容易測試。而在使用React的Context和Reducer時，可以在Reducer中進行相同的純函數狀態變化，但Redux的Action和State的設計可以更好地達到這個目的。
                     易於開發人員協作：Redux提供了一些特殊的工具和技術，使得開發人員可以方便地協作開發一個大型的應用。例如，Redux DevTools可以幫助開發人員跟蹤應用的狀態變化，以及可以使用中間件來定義和處理一系列的異步操作。這些工具和技術使得多個開發人員可以更好地協作開發一個複雜的應用。 */}
 
                 <p>總之，雖然React的Context和Reducer可以用於狀態管理，但Redux提供了更多的功能和優勢，可以讓狀態管理變得更加清晰、可預測和易於開發人員協作。當應用變得越來越複雜時，Redux將會成為一個非常有用的工具。</p>
+
+                <h2 className="hightlight">但是根據我查的很多資料，我並不覺得context和reducer加起來用會比單純使用redux複雜，所以這能說是優勢嗎？我不太確定</h2>
+                <p>但有一點我很確定是優勢：Redux有time travel功能，可以讓你在開發時可以回到過去的狀態，這個功能在開發時非常有用，但在正式上線時，這個功能就會被關閉。</p>
+                <p>time travel功能的實現原理是：Redux會將每個狀態都保存下來，當你回到過去的狀態時，Redux會將狀態還原到你選擇的那個狀態。</p>
+                <p>你可以透過Redux DevTools來使用time travel功能，這是一個Chrome(Edge也可以)的擴展，你可以在這裡下載：<a href="https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=zh-TW" target="_blank" rel="noreferrer">Redux DevTools</a></p>
 
                 <h2 className="text-2xl mb-3 mt-3">Redux的元素</h2>
                 <p>Redux的元素有三個，但我自己覺得是四個，分別是</p>
