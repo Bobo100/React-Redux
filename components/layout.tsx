@@ -10,6 +10,6 @@ export default function Layout({ children }: LayoutProps) {
         <div className="pt-20 pl-3">
             {children}
         </div>
-        {/* <Footer /> */}
+        <Footer />
     </div>);
 }

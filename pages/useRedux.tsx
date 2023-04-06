@@ -28,7 +28,7 @@ const UseRedux = () => {
             <Head>
                 <title>Redux介紹</title>
             </Head>
-
+            <h1 className="text-4xl mb-3 mt-3">Redux介紹 這是舊版(For Next.js)</h1>
             <p>就根據Redux的四個主要元素來介紹</p>
             <ul className="list-disc list-inside ml-3">
                 <li>State：狀態</li>
@@ -102,7 +102,7 @@ export const reducer = (state: state = initialState, action: action) => {
             </Prism>
 
             <h3 className="text-2xl mb-3 mt-3">最後就是store</h3>
-            <p>我們要把reducer和state放到store裡面</p>
+            <p>我們要把reducer和state放到store裡面，你可以在這邊去更改reducer的名稱，我這邊就更改成firstReducer，如果你有多個reducer的話，可以在這邊一起放進去</p>
             <Prism language="javascript" style={vscDarkPlus}>
                 {`import { configureStore } from "@reduxjs/toolkit";
 import thunk from "redux-thunk";
@@ -112,12 +112,16 @@ const store = configureStore({
     reducer: {
         firstReducer: reducer
     },
+    // 我們這裡其實不需要使用非同步的action，但是我們還是引入了redux-thunk，如果你要使用非同步的action，可以在這邊引入
+    // 最近得知這裡可以直接使用redux-toolkit的createAsyncThunk來寫非同步的action，所以這裡就不需要引入thunk了
     middleware: [thunk]
 });
 
 export default store;`}
             </Prism>
             <p>這樣就完成了，就可以使用useSelector來取得狀態，而透過store則可以使用useDispatch來更改狀態</p>
+            <p>補充：如果你要使用非同步的action，可以使用redux-thunk，這裡我們在store裡面引入了thunk，所以可以在action裡面使用非同步的action</p>
+            <p>因為redux-toolkit已經幫我們寫好了非同步的action，所以我們只要在action裡面使用createAsyncThunk就可以了</p>
 
             <h2 className="text-2xl mb-3 mt-3">Redux的使用</h2>
             <p>首先我們要先在pages/_app.tsx裡面引入Provider</p>

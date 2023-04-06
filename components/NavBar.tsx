@@ -6,7 +6,7 @@ const NavBar = () => {
     const [visible, setVisible] = useState(true);
 
     useEffect(() => {
-        const handleScroll = () => {            
+        const handleScroll = () => {
             const currentScrollPos = window.scrollY;
             if (currentScrollPos === 0) {
                 setVisible(true);
@@ -24,6 +24,7 @@ const NavBar = () => {
             window.removeEventListener('scroll', handleScroll);
         };
     }, [prevScrollPos, visible]);
+
 
     return (
         <nav className={`navbar ${visible ? 'navbar--visible' : 'navbar--hidden'}`}>

@@ -7,6 +7,10 @@ $bacground-color: #282c34;
 $color: #61dafb;
 $navbar-bg-color: #0f1114;
 
+* {
+    box-sizing: border-box;
+}
+
 .navbar {
     position: fixed;
     top: 0;
@@ -44,7 +48,7 @@ a {
     }
 }
 
-.App {
+.html, body {
     background-color: $bacground-color;
     color: white;
 }
