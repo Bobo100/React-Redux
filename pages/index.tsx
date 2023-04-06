@@ -1,9 +1,10 @@
 import Head from "next/head";
 import Layout from '../components/layout';
 
+import { Prism } from 'react-syntax-highlighter';
+import { vscDarkPlus } from 'react-syntax-highlighter/dist/cjs/styles/prism';
+
 function HomePage() {
-
-
     return (
         <Layout>
             <Head>
@@ -60,12 +61,22 @@ function HomePage() {
                     <li>Store：整個應用唯一的數據存儲庫，包含應用中所有state。</li>
                 </ul>
 
-                <h3>直白地說主要就是在reducer的寫法上有調整，改成用createSlice來寫，這樣就不用自己寫action和reducer了。</h3>
+                <h3>直白地說主要就是在reducer的寫法上有調整，改成用createSlice來寫，這樣就不用自己寫action和reducer了(當然你還是可以自己寫)。</h3>
 
                 <p>在舊版Redux中，通常由三個主要元素組成：action、reducer和state。但是，在新版Redux中，還引入了其他一些概念和工具，例如Redux Toolkit和createSlice函數，以簡化Redux代碼並提高開發效率。 Redux Toolkit 是一個官方建議使用的工具包，幫助你在Redux應用程序中更快地編寫代碼並減少樣板代碼的量。createSlice函數是Redux Toolkit提供的一種方法，它使你更輕鬆地創建redux slice（包含reducer和actions）。</p>
 
+                <h2 className="text-2xl mb-3 mt-3">Redux的安裝</h2>
+                <p>Redux的安裝非常簡單，只需要安裝兩個套件就可以了，分別是</p>
+                <ul className="list-disc list-inside ml-3">
+                    <li>react-redux：Redux的React綁定套件</li>
+                    <li>reduxjs/toolkit：主要用於簡化 Redux 的開發流程和增強 Redux 的功能。是可以不用安裝的，但我的範例都會用到，所以我還是建議你安裝。</li>
+                </ul>
+                <p>安裝方式如下：</p>
+                <Prism language="plaintext" style={vscDarkPlus}>
+                    {`npm install react-redux @react-redux @reduxjs/toolkit`}
+                </Prism>
 
-
+                <p>那因為Redux算是非常複雜的東西，所以我會分成幾個章節來介紹，這個章節主要是介紹Redux的基本概念，下一章節會介紹Redux舊版使用。接著是新版使用，最後會是一些詳細介紹每個API元件</p>
 
             </div>
         </Layout>

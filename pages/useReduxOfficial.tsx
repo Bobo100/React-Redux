@@ -3,30 +3,12 @@ import Head from "next/head";
 import Layout from '../components/layout';
 import { Prism } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/cjs/styles/prism';
-import { useDispatch, useSelector } from "react-redux";
-import { ActionType } from "../components/redux/action/actionType";
-import { item } from "../components/redux/state/stateType";
 
 const useReduxOfficial = () => {
-
-  const itemList = useSelector((state: any) => state.firstReducer.itemList);
-  console.log(itemList)
-
-  const dispatch = useDispatch();
-
-  const addItem = (item: item) => {
-    console.log("addItem")
-    dispatch({
-      type: ActionType.ADD_ITEM,
-      payload: item
-    })
-  }
-  const removeItem = (name: string) => dispatch({ type: ActionType.REMOVE_ITEM, payload: name });
-
   return (
     <Layout>
       <Head>
-        <title>Redux介紹</title>
+        <title>Redux新版介紹</title>
       </Head>
 
       <h1 className="text-3xl mt-2">官方的教學 (最新版) For Next.js用</h1>
@@ -189,6 +171,11 @@ return (
       <p>上面的範例與程式碼連結：</p>
       <a href="https://react-redux-example-01.vercel.app/" rel="noopener" target="_blank">體驗我們寫好的redux</a>
       <a href="https://github.com/Bobo100/React-Redux-Example-01" rel="noopener" target="_blank">完整程式碼</a>
+
+      <h1 className="text-3xl mt-2">非同步怎麼處理</h1>
+      <p>這邊我們使用redux-thunk來處理非同步</p>
+      
+
     </Layout>
   )
 }

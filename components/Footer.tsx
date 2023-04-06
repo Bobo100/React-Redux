@@ -2,24 +2,19 @@ import { useState, useEffect } from "react";
 import RouterLink from "./RoutesLink"
 
 const Footer = () => {
-    const [screenHeight, setScreenHeight] = useState(0);
+    const [screenHeight, setScreenHeight] = useState(10);
 
-    // useEffect(() => {
-    //     const handleResize = () => {
-    //         setScreenHeight(window.innerHeight);
-    //     };
-
-    //     window.addEventListener('resize', handleResize);
-
-    //     return () => window.removeEventListener('resize', handleResize);
-    // }, []);
-
+    // 取得className 為 App的height
+    const [height, setHeight] = useState(0)
     useEffect(() => {
+        const app = document.querySelector('.App')
         setScreenHeight(window.innerHeight);
-    }, []);
+        if (app) {
+            setHeight(app.clientHeight)
+        }
+    }, [])
 
-
-    if (screenHeight < 500) return (<></>);
+    if (height < screenHeight) return (<></>);
 
     return (
         <div className="footer m-3">
