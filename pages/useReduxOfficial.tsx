@@ -86,6 +86,7 @@ export const userInitialState: UserState = {
       </Prism>
       <p className="text-xl text-title">接著是Slice(更改Reducer和Action的寫法)</p>
       <p>那因為我在前面 說要使用兩個reducer (兩個slice的意思) 所以我們這邊會寫兩個slice.tsx</p>
+      <p>在 createSlice() 這個函式中可以帶入 reducer function、slice name 和 initial state，將自動產生對應的 slice reducer，並包含對應的 action creators 和 action types 在內。在使用 createSlice 或 createReducer 撰寫 reducer 的時候可以不用再用 switch case 語法，它們的語法底層加入了 immer，因此可以使用會有 side effect 的寫法去變更 state（直接修改 state），它背後會再幫你轉成 「immutable」的方式。</p>
       <p className="text-base text-title">counterSlice.tsx</p>
       <Prism language="javascript" style={vscDarkPlus}>
         {`// component/redux/slice/counterSlice.tsx
@@ -98,6 +99,7 @@ export const counterSlice = createSlice({
     // \`createSlice\` will infer the state type from the \`initialState\` argument
     initialState,
     reducers: {
+        //  slice 會自動產生 action creators 和 action types
         increment: (state) => {
             state.value += 1
         },
@@ -153,10 +155,12 @@ export default userSlice.reducer`}
 
       <p>這樣就完成了，就可以透過useAppSelector來取得State的值了以及透過useAppDispatch來分發Action了</p>
 
-      <p>你可以這樣使用</p>
+      <p>你可以這樣使用，這邊就只顯示加與減的code，詳細的請點連結去看~</p>
       <Prism language="javascript" style={vscDarkPlus}>
         {`function Counter() {
-const count = useAppSelector((state) => state.counterReducer.value)
+// const count = useAppSelector((state) => state.counterReducer.value)
+// 因為我們前面有建立好了selectCount，所以我們可以這樣使用
+const count = useAppSelector(selectCount)
 const dispatch = useAppDispatch()
 
 return (
@@ -174,7 +178,169 @@ return (
 
       <h1 className="text-3xl mt-2">非同步怎麼處理</h1>
       <p>這邊我們使用redux-thunk來處理非同步</p>
-      
+
+      <p className="text-xl text-title">首先是安裝，如果你有安裝toolkit就不用再安裝了</p>
+      <Prism language="javascript" style={vscDarkPlus}>
+        {`npm install redux-thunk`}
+      </Prism>
+
+      <p className="text-xl text-title">接著是修改store，但現在基本上預設都有thunk了，所以根本不用修改</p>
+      <Prism language="javascript" style={vscDarkPlus}>
+        {`// component/redux/store/store.tsx
+import { configureStore } from "@reduxjs/toolkit";
+import thunk from "redux-thunk";
+import { reducer } from "../reducer/reducer";
+
+export const store = configureStore({
+    reducer: {
+        firstReducer: reducer
+    },
+    // middleware: [thunk]
+    // 預設就是true，但是如果你要自己設定的話，可以這樣寫(根本沒影響 除非你要關閉)
+    // 關閉就會
+    // Error: Actions must be plain objects. Use custom middleware for async actions.
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+      thunk: true
+    })
+})`}
+      </Prism>
+
+      <p className="text-xl text-title">接著是寫一個非同步的action，我們會使用兩個API元件，一個是createAsyncThunk，一個是createSlice(然後加上extraReducers)</p>
+      <p>createAsyncThunk可以協助我們管理異步的狀態，createAsyncThunk 接收兩個參數：typePrefix 和 payloadCreator。<br />
+        typePrefix 是字串，在你指定的名稱前都會加上字首（通常是動詞），以便創建有意義的 Redux action 類型。(白話的說就是取一個方便你閱讀的名字)<br />
+        而 payloadCreator 是一個函式，負責處理異步邏輯並返回一個 Promise 物件，當該 Promise 物件解析完成時，將其值傳遞給 Redux store。</p>
+
+      <p>createAsyncThunk 函式會自動創建相應的 Redux reducer，以處理異步 action。這些 reducer 會將異步 action 的狀態儲存在 Redux store 中，並且會自動創建三個 action creator：pending、fulfilled 和 rejected。</p>
+      <p className="text-xl text-title">接著是createSlice，這邊我們要注意的是，我們要在createSlice的extraReducers裡面去寫pending、fulfilled、rejected，用來接收createAsyncThunk的回傳值</p>
+      <p>extraReducers意思是允許 createSlice 去針對非此 createSlice 所創建的 actions 做出回應。extraReducers 就是用來參照 「外部」的 actions，它們不會出現在 sliceObject.actions 中。</p>
+
+      <p>extraReducers是用來接收非此createSlice所創建的actions，像是createAsyncThunk的回傳值。<br />
+        寫法是綁住builder，而builder又有三個方法分別是addCase、addMatcher、addDefaultCase。<br />
+        ！！請注意這三個method有順序限制，一定要是addCase、addMatcher、addDefaultCase。
+      </p>
+
+      <p>簡短的介紹一下</p>
+      <p className="border border-title p-2">addCase：添加一個可變 reducer，用於匹配指定 action type。
+        最常用的方法，用於匹配指定的 action type，並對 state 進行更新。
+      </p>
+      <Prism language="javascript" style={vscDarkPlus}>
+        {`const userSlice = createSlice({
+  name: 'users',
+  initialState: { users: [], userNames: [] },
+  reducers: {},
+  extraReducers: builder => {
+    builder.addCase(fetchUsers.fulfilled, (state, action) => {
+      state.users = action.payload
+    })
+  }
+})`}
+      </Prism>
+      <p className="border border-title p-2">addMatcher：添加一個自定義 matcher 函數，用於匹配特定條件下的 action。
+        addMatcher()可以用於針對特定條件下的action做出回應，例如當一個 action 的 payload 符合某些特定的條件時才進行相應的狀態更新。
+        這意味著，相比使用addCase()，使用addMatcher()能夠更細粒度地控制 reducer 如何响应 action，從而使得代碼更加具有可讀性和可维護性。
+
+        舉個例子，假設我們有一個Redux store來保存用戶列表，當新增用戶時，不僅要更新state中的users列表，還要在另一個state中的userNames列表中增加此用戶的名字。
+        此時就可以利用addMatcher()函式根據action的payload來判斷是否需要對應處理：
+      </p>
+      <Prism language="javascript" style={vscDarkPlus}>
+        {`const userSlice = createSlice({
+  name: 'users',
+  initialState: { users: [], userNames: [] },
+  reducers: {},
+  extraReducers: builder => {
+    builder.addMatcher(
+      action => action.type === 'users/addUser' && action.payload.user.age > 18, // 條件：新增用戶的年齡大於18歲
+      (state, action) => {
+        state.users.push(action.payload.user); // 在users列表中添加新用戶
+        state.userNames.push(action.payload.user.name); // 在userNames列表中添加新用户的名字
+      }
+    )
+  }
+})`}
+      </Prism>
+
+      <p className="border border-title p-2">addDefaultCase：添加一個默認的回傳語句，用於當創建的 reducer 未找到對應的 action type 時使用。
+        addDefaultCase()可以用於當創建的 reducer 未找到對應的 action type 時使用，這個方法的參數是一個函數，該函數的參數是state和action，返回值是state。
+        這個方法的用法和addCase()類似，但是它是用於處理所有未匹配到的action，因此它的優先級最低。
+      </p>
+
+      <Prism language="javascript" style={vscDarkPlus}>
+        {`const userSlice = createSlice({
+  name: 'users',
+  initialState: { users: [], userNames: [] },
+  reducers: {},
+  extraReducers: builder => {
+    builder.addCase(fetchUsers.fulfilled, (state, action) => {
+      state.users = action.payload
+    })
+    builder.addMatcher(
+      action => action.type === 'users/addUser' && action.payload.user.age > 18, // 條件：新增用戶的年齡大於18歲
+      (state, action) => {
+        state.users.push(action.payload.user); // 在users列表中添加新用戶
+        state.userNames.push(action.payload.user.name); // 在userNames列表中添加新用户的名字
+      }
+    )
+    builder.addDefaultCase((state, action) => {
+      // 未匹配到的action
+    })
+  }
+})`}
+      </Prism>
+
+      <h1 className="text-3xl text-title">寫好的完整createAsyncThunk和createSlice如下：</h1>
+
+      <Prism language="javascript" style={vscDarkPlus}>
+        {`// component/redux/slice/asyncSlice.tsx
+import { createAsyncThunk, createSlice, Dispatch, PayloadAction } from "@reduxjs/toolkit"
+import { asyncInitialState } from "../state/stateType"
+import { RootState } from "../store/store"
+
+export const fetchFirstData = createAsyncThunk(
+    'first/fetchData',
+    async () => {
+        const response = await fetch('https://jsonplaceholder.typicode.com/users')
+        const data = await response.json()
+        return data
+    }
+)
+
+const asyncSlice = createSlice({
+    name: 'asyncData',
+    initialState: asyncInitialState,
+    reducers: {
+    },
+
+    // extraReducers是用來接收非此createSlice所創建的actions，像是createAsyncThunk的回傳值
+    // 寫法是綁住builder，而builder又有三個方法分別是addCase、addMatcher、addDefaultCase
+    // 請注意這三個method有順序限制，一定要是addCase、addMatcher、addDefaultCase
+
+    // 這邊使用addCase就可以了，因為我們只有一個action，也沒有其他的特殊需求
+    extraReducers: (builder) => {
+        builder
+            .addCase(fetchFirstData.pending, (state) => {
+                state.isLoaded = true
+            })
+            // fulfilled是當action成功執行時的回傳值 就去更新state
+            .addCase(fetchFirstData.fulfilled, (state, action) => {
+                state.isLoaded = false
+                state.isComplete = true
+                state.AsyncStateList = action.payload
+            })
+            .addCase(fetchFirstData.rejected, (state) => {
+                state.isLoaded = false
+                state.isComplete = false
+            })
+    }
+})
+
+export const selectAsync = (state: RootState) => state.async
+
+export default asyncSlice.reducer`}
+      </Prism>
+
+      <p>當然你必須修改State，要符合你的需求，完整版都在下方連結中。</p>
+      <a href="https://react-redux-example-02.vercel.app/" rel="noopener" target="_blank">體驗我們寫好的redux</a>
+      <a href="https://github.com/Bobo100/React-Redux-Example-02 " rel="noopener" target="_blank">完整程式碼</a>
 
     </Layout>
   )
