@@ -11,7 +11,7 @@ const reduxDetail = () => {
         <title>Redux Toolkit的詳細介紹</title>
       </Head>
 
-      <a href="https://redux-toolkit.js.org/api/configureStore" rel="noopener" target="_blank">官方文件</a>
+      <a href="https://redux-toolkit.js.org/api/configureStore" rel="noopener" target="_blank" className="m-3">官方文件</a>
       <h1 className="text-3xl mt-2">Redux Toolkit的詳細介紹</h1>
       <p>根據官方分類</p>
       <h2>Store Setup主要有</h2>

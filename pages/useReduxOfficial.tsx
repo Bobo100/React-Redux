@@ -11,6 +11,9 @@ const useReduxOfficial = () => {
         <title>Redux新版介紹</title>
       </Head>
 
+      <a href="https://hackmd.io/@RobinTsai/rkb4oPZGs#createSlice" target="_blank" rel="noopener" className="m-3">網路上不錯的筆記</a>
+      <a href="https://redux-toolkit.js.org/api/configureStore" rel="noopener" target="_blank" className="m-3">官方文件</a>
+
       <h1 className="text-3xl mt-2">官方的教學 (最新版) For Next.js用</h1>
       <h1 className="text-3xl my-3">定義Root State和Dispatch Types(Define Root State and Dispatch Types​)</h1>
       <p>Redux Toolkit的configureStore API不需要任何額外的typing。但是，你需要提取RootState類型和Dispatch類型，以便可以根據需要進行引用。<br />
@@ -84,10 +87,49 @@ export const userInitialState: UserState = {
     email: ''
 }`}
       </Prism>
-      <p className="text-xl text-title">接著是Slice(更改Reducer和Action的寫法)</p>
+      <p className="text-xl text-title bg-black">接著是Slice(更改Reducer和Action的寫法)</p>
       <p>那因為我在前面 說要使用兩個reducer (兩個slice的意思) 所以我們這邊會寫兩個slice.tsx</p>
-      <p>在 createSlice() 這個函式中可以帶入 reducer function、slice name 和 initial state，將自動產生對應的 slice reducer，並包含對應的 action creators 和 action types 在內。在使用 createSlice 或 createReducer 撰寫 reducer 的時候可以不用再用 switch case 語法，它們的語法底層加入了 immer，因此可以使用會有 side effect 的寫法去變更 state（直接修改 state），它背後會再幫你轉成 「immutable」的方式。</p>
-      <p className="text-base text-title">counterSlice.tsx</p>
+      <p>在 createSlice() 這個函式中可以帶入 reducer function、slice name 和 initial state，將自動產生對應的 slice reducer，並包含對應的 action creators 和 action types 在內。
+        在使用 createSlice 或 createReducer 撰寫 reducer 的時候可以不用再用 switch case 語法，它們的語法底層加入了 immer，因此可以使用會有 side effect 的寫法去變更 state（直接修改 state），它背後會再幫你轉成 「immutable」的方式。</p>
+
+      <p className="border border-title p-2 text-title font-bold bg-black">補充：它們的語法底層加入了 immer，因此可以使用會有 side effect 的寫法去變更 state（直接修改 state），它背後會再幫你轉成 「immutable」。</p>
+
+      <p>Redux Toolkit 裡的 createSlice 和 createReducer 函式底層採用了 immer 這個函式庫去實現直接修改 state 的方式，並且背後會幫你轉成 immutable 的方式。
+        因此開發者在使用 createSlice 和 createReducer 撰寫 reducer 的時候可以使用有 side effect 的方式去變更 state。
+        例如：可以直接將 state 裡的物件、陣列等「直接修改」，而不需要像以前一樣必須「複製整個物件／陣列」然後再修改某一個值。</p>
+      <p>immer 是一個 JavaScript 函式庫，它可以讓你使用基於物件的程式碼來修改深層次的 state 物件，而不需要使用傳統的複製和粘貼方式。
+        immer 使用起來比傳統 Immutable Library 更加簡潔，並且可以讓你的程式碼更易讀、更容易維護。</p>
+
+      <p className="border border-title p-2 text-title font-bold">補充：必須「複製整個物件／陣列」然後再修改某一個值意思</p>
+      <p>在傳統的 JavaScript 上，如果你想要修改一個物件裡面的某個值，必須先使用 Object.assign() 或是 spread operator (...) 這些方法複製一份全新的物件，然後再修改其中的屬性。例如：</p>
+      <Prism language="javascript" style={vscDarkPlus}>
+        {`// 這是一個簡單的物件
+const myObj = { a: 1, b: 2 };
+const newObj = Object.assign({}, myObj, {b: 3});
+// 或是 const newObj = {...myObj, b: 3};
+console.log(myObj); // {a: 1, b: 2}
+console.log(newObj); // {a: 1, b: 3}`}
+      </Prism>
+      <p>這樣做的問題在於，當物件變得很大時，複製整個物件會佔用大量的記憶體，並且容易導致效能問題。</p>
+
+      <p>在使用 immer 時，你可以直接修改物件裡面的值，而不需要複製整個物件，例如：</p>
+      <Prism language="javascript" style={vscDarkPlus}>
+        {`import produce from 'immer';
+
+const myObj = { a: 1, b: 2 };
+
+const newObject = produce(myObj, draft => {
+  draft.b = 3;
+});
+
+console.log(myObj); // { a: 1, b: 2 }
+console.log(newObject); // { a: 1, b: 3 }`}
+      </Prism>
+
+      <p>在上面的範例中，使用 produce() 函数從傳入的 state 物件創建一份 immutable 的複本（也就是 draft 物件），然後你可以直接修改 draft 物件裡面的屬性值，這樣就不需要額外地創建和更新新的物件了。</p>
+
+      <p className="text-2xl border border-title p-2 text-title font-bold bg-black">回歸到我們的主題</p>
+      <p className="text-xl">第一個slice：counterSlice.tsx</p>
       <Prism language="javascript" style={vscDarkPlus}>
         {`// component/redux/slice/counterSlice.tsx
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
@@ -120,7 +162,8 @@ export const selectCount = (state: RootState) => state.counterReducer.value
 
 export default counterSlice.reducer`}
       </Prism>
-      <p className="text-base text-title">userSlice.tsx</p>
+
+      <p className="text-xl">第二個slice：userSlice.tsx</p>
       <Prism language="javascript" style={vscDarkPlus}>
         {`// component/redux/slice/userSlice.tsx
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
