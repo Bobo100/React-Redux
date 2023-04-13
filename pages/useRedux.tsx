@@ -100,6 +100,7 @@ export const reducer = (state: state = initialState, action: action) => {
     }
 }`}
             </Prism>
+            <p className="border border-title p-2 text-title font-bold bg-black">值得一提的是redux是不允許直接修改state的，redux是immutable的，所以我們要用到...state，這個是展開運算子，它會把state的所有屬性都展開，這樣我們才能修改裡面的屬性。之後返回的會是一個新的state，這樣才能讓redux知道我們有修改state</p>
 
             <h3 className="text-2xl mb-3 mt-3">最後就是store</h3>
             <p>我們要把reducer和state放到store裡面，你可以在這邊去更改reducer的名稱，我這邊就更改成firstReducer，如果你有多個reducer的話，可以在這邊一起放進去</p>

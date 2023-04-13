@@ -128,7 +128,7 @@ console.log(newObject); // { a: 1, b: 3 }`}
 
       <p>在上面的範例中，使用 produce() 函数從傳入的 state 物件創建一份 immutable 的複本（也就是 draft 物件），然後你可以直接修改 draft 物件裡面的屬性值，這樣就不需要額外地創建和更新新的物件了。</p>
 
-      <p className="text-2xl border border-title p-2 text-title font-bold bg-black">回歸到我們的主題</p>
+      <p className="text-2xl border border-title p-2 text-title font-bold bg-black my-3">回歸到我們的主題</p>
       <p className="text-xl">第一個slice：counterSlice.tsx</p>
       <Prism language="javascript" style={vscDarkPlus}>
         {`// component/redux/slice/counterSlice.tsx
@@ -280,10 +280,11 @@ export const store = configureStore({
       </Prism>
       <p className="border border-title p-2">addMatcher：添加一個自定義 matcher 函數，用於匹配特定條件下的 action。
         addMatcher()可以用於針對特定條件下的action做出回應，例如當一個 action 的 payload 符合某些特定的條件時才進行相應的狀態更新。
-        這意味著，相比使用addCase()，使用addMatcher()能夠更細粒度地控制 reducer 如何响应 action，從而使得代碼更加具有可讀性和可维護性。
+        這意味著，相比使用addCase()，使用addMatcher()能夠更細粒度地控制 reducer 如何響應 action，從而使得代碼更加具有可讀性和可维護性。
 
         舉個例子，假設我們有一個Redux store來保存用戶列表，當新增用戶時，不僅要更新state中的users列表，還要在另一個state中的userNames列表中增加此用戶的名字。
         此時就可以利用addMatcher()函式根據action的payload來判斷是否需要對應處理：
+        <a href="https://react-redux-example-02.vercel.app/User" rel="noopener" target="_blank">實作範例連結</a>
       </p>
       <Prism language="javascript" style={vscDarkPlus}>
         {`const userSlice = createSlice({
