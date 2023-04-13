@@ -39,15 +39,19 @@ export type AppDispatch = typeof store.dispatch`}
       </Prism>
       <p>configureStore() 會自動組合你的 reducer，並建立 Redux store。它會回傳一個 Redux store 物件，你可以使用它來呼叫 getState() 取得目前的 state，或是 dispatch(action) 來更新 state。</p>
       <p>而這邊新增的兩個部分則是RootState和AppDispatch，這兩個型別是用來幫助我們在使用Redux時，可以更方便的使用型別推論，而不用每次都要自己去宣告型別。</p>
-      <p>而這邊的RootState則是用來取得目前的state，而AppDispatch則是用來dispatch action，而這邊的action則是在actionType.tsx中宣告的</p>
+      <p>而這邊的RootState則是用來取得目前的state，而AppDispatch則是用來dispatch action</p>
+      <p className="border border-title p-2 text-title font-bold">白話：這兩步驟(RootState和AppDispatch)是為了之後的型別推論 保證型別的正確性</p>
 
       <h1 className="text-3xl my-3">定義Hook(Define Typed Hooks​)</h1>
       <p>由於Redux store的dispatch和selector函數都需要使用RootState和AppDispatch類型，因此我們可以為它們定義一個hook，以便可以在需要的地方使用它們。</p>
       <p>在每個組件中導入RootState和AppDispatch類型是可行的，但最好在你的應用程序中創建具有類型定義的useDispatch和useSelector hooks。這有幾個原因：<br />
         對於useSelector，它可以省去每次輸入(state: RootState)的麻煩。<br />
         使用默認Dispatch類型的useDispatch並不知道thunk。為了正確地分發thunk，需要在store中使用特定的自定義AppDispatch類型，該類型包括thunk middleware類型，並使用它來替換useDispatch。添加預先定義的useDispatch hook可以避免忘記在需要時導入AppDispatch。</p>
-      <p>由於這些都是實際變量而不是類型，因此將它們定義在單獨的文件中（例如app/hooks.ts），而不是存儲設置文件中非常重要。<br />
+      <p>由於這些都是實際變量而不是類型，因此將它們定義在單獨的文件中（例如app/hooks.ts），而不是儲存設置文件中非常重要。<br />
         這使你可以將它們導入到任何需要使用hooks的組件文件中，並避免潛在的循環引入依賴問題。</p>
+
+      <p className="border border-title p-2 text-title font-bold">白話：自定義hook 這樣就可以在其他地方使用useAppDispatch和useAppSelector 同時使用前面的型別推論<br />
+        可以確保我們使用useAppDispatch和useAppSelector的時候都只會使用到我們在store裡面定義的型別</p>
       <Prism language="javascript" style={vscDarkPlus}>
         {`// components/redux/hook/hook.tsx
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
@@ -385,6 +389,10 @@ export default asyncSlice.reducer`}
       <p>當然你必須修改State，要符合你的需求，完整版都在下方連結中。</p>
       <a href="https://react-redux-example-02.vercel.app/" rel="noopener" target="_blank">體驗我們寫好的redux</a>
       <a href="https://github.com/Bobo100/React-Redux-Example-02 " rel="noopener" target="_blank">完整程式碼</a>
+
+      <h1 className="text-3xl text-title my-3">你以為結束了，但還沒有。接下來我們還可以在優化一下。</h1>
+      <a href="https://cn.redux.js.org/usage/structuring-reducers/structuring-reducers" rel="noopener" target="_blank">官方的reducer介紹(裡面也有優化)</a>
+      <p>我們寫好的slice，可以把裡面的reducer拆成多個function，然後使用，這樣的好處是不會讓createSlice變得太長，也可以讓你的程式碼更好維護。</p>
 
     </Layout>
   )

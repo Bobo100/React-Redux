@@ -34,8 +34,46 @@ const reduxDetail = () => {
 
       <h2>其他</h2>
       <ul>
-        <li>createSelector：來自 Reselect 庫，為了易用再導出。</li>
+        <li>createSelector：Reselect 提供了一個名為 createSelector 的函數來生成記憶化 Selector。createSelector 接收一個或多個 input selector 函數，外加一個 output selector 作為參數，並返回一個新的 Selector 函數作為結果。</li>
       </ul>
+
+      <h2>configureStore</h2>
+      <p>configureStore 接受一個 Redux store 配置對象，並返回一個 Redux store 實例。它可以自動組合你的切片 reducers，添加您提供的任何 Redux 中間件，默認情況下包含 redux-thunk ，並允許使用 Redux DevTools 擴展。</p>
+
+      <h2>getDefaultMiddleware</h2>
+
+      <h2>createReducer</h2>
+
+      <h2>createAction</h2>
+
+      <h2>createSlice</h2>
+
+      <h2>createAsyncThunk</h2>
+
+      <h2>createEntityAdapter</h2>
+
+      <h2>createSelector</h2>
+      <p>Reselect 提供了一個名為 createSelector 的函數來生成記憶化 Selector。createSelector 接收一個或多個 input selector 函數，外加一個 output selector 作為參數，並返回一個新的 Selector 函數作為結果。</p>
+      <p>直接舉例比較能夠理解：</p>
+      <Prism language="javascript" style={vscDarkPlus}>
+        {`const selectA = state => state.a
+const selectB = state => state.b
+const selectC = state => state.c
+
+const selectABC = createSelector([selectA, selectB, selectC], (a, b, c) => {
+  // 對 a、b 和 c 執行操作，並返回一個結果
+  return a + b + c
+})
+
+// 調用 Selector 並得到結果
+const abc = selectABC(state)
+
+// 也可以寫成單獨的參數，結果完全一樣
+const selectABC2 = createSelector(selectA, selectB, selectC, (a, b, c) => {
+  // 對 a、b 和 c 執行操作，並返回一個結果
+  return a + b + c
+})`}
+      </Prism>
 
     </Layout>
   )
