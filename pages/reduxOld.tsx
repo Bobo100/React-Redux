@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { ActionType } from "../components/redux/action/actionType";
 import { item } from "../components/redux/state/stateType";
 
-const UseRedux = () => {
+const reduxOld = () => {
 
     const itemList = useSelector((state: any) => state.firstReducer.itemList);
     console.log(itemList)
@@ -211,4 +211,4 @@ const removeItem = (name: string) => dispatch({ type: ActionType.REMOVE_ITEM, pa
     )
 }
 
-export default UseRedux
+export default reduxOld

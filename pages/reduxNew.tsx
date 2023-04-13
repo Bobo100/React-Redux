@@ -4,7 +4,7 @@ import Layout from '../components/layout';
 import { Prism } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 
-const useReduxOfficial = () => {
+const reduxNew = () => {
   return (
     <Layout>
       <Head>
@@ -390,4 +390,4 @@ export default asyncSlice.reducer`}
   )
 }
 
-export default useReduxOfficial
+export default reduxNew
