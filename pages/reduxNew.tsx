@@ -13,6 +13,7 @@ const reduxNew = () => {
 
       <a href="https://hackmd.io/@RobinTsai/rkb4oPZGs#createSlice" target="_blank" rel="noopener" className="m-3">網路上不錯的筆記</a>
       <a href="https://redux-toolkit.js.org/api/configureStore" rel="noopener" target="_blank" className="m-3">官方文件</a>
+      <a href="https://cn.redux.js.org/usage/structuring-reducers/structuring-reducers" rel="noopener" target="_blank" className="m-3">官方文件(中文版)</a>
 
       <h1 className="text-3xl mt-2">官方的教學 (最新版) For Next.js用</h1>
       <h1 className="text-3xl my-3">定義Root State和Dispatch Types(Define Root State and Dispatch Types​)</h1>
@@ -393,6 +394,9 @@ export default asyncSlice.reducer`}
       <h1 className="text-3xl text-title my-3">你以為結束了，但還沒有。接下來我們還可以在優化一下。</h1>
       <a href="https://cn.redux.js.org/usage/structuring-reducers/structuring-reducers" rel="noopener" target="_blank">官方的reducer介紹(裡面也有優化)</a>
       <p>我們寫好的slice，可以把裡面的reducer拆成多個function，然後使用，這樣的好處是不會讓createSlice變得太長，也可以讓你的程式碼更好維護。</p>
+
+      <a href="https://github.com/Bobo100/React-Redux-Example-03 " rel="noopener" target="_blank">完整程式碼</a>
+
 
     </Layout>
   )
