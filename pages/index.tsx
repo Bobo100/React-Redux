@@ -1,8 +1,6 @@
 import Head from "next/head";
 import Layout from '../components/layout';
-
-import { Prism } from 'react-syntax-highlighter';
-import { vscDarkPlus } from 'react-syntax-highlighter/dist/cjs/styles/prism';
+import { CopyToClipboard } from "../components/Code/CopyToClipboard";
 
 function HomePage() {
     return (
@@ -72,9 +70,9 @@ function HomePage() {
                     <li>reduxjs/toolkit：主要用於簡化 Redux 的開發流程和增強 Redux 的功能。是可以不用安裝的，但我的範例都會用到，所以我還是建議你安裝。</li>
                 </ul>
                 <p>安裝方式如下：</p>
-                <Prism language="plaintext" style={vscDarkPlus}>
+                <CopyToClipboard>
                     {`npm install react-redux @react-redux @reduxjs/toolkit`}
-                </Prism>
+                </CopyToClipboard>
 
                 {/* <p className="mt-3">補充</p>
                 <p>Redux 只能接收序列化（serializable）的資料，因為 Redux 需要能夠 serializable 的方式來管理應用程式狀態（state）。這是 Redux 中一個很重要的原則之一。

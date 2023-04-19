@@ -1,8 +1,7 @@
 
 import Head from "next/head";
 import Layout from '../components/layout';
-import { Prism } from 'react-syntax-highlighter';
-import { vscDarkPlus } from 'react-syntax-highlighter/dist/cjs/styles/prism';
+import { CopyToClipboard } from "../components/Code/CopyToClipboard";
 
 const reduxNew = () => {
   return (
@@ -19,7 +18,7 @@ const reduxNew = () => {
       <h1 className="text-3xl my-3">定義Root State和Dispatch Types(Define Root State and Dispatch Types​)</h1>
       <p>Redux Toolkit的configureStore API不需要任何額外的typing。但是，你需要提取RootState類型和Dispatch類型，以便可以根據需要進行引用。<br />
         從store本身推斷這些類型意味著當你添加更多state slices或修改middleware設置時，它們會正確更新。</p>
-      <Prism language="javascript" style={vscDarkPlus}>
+      <CopyToClipboard>
         {`// components/redux/store/store.tsx
 import { configureStore } from '@reduxjs/toolkit'
 import counterReducer from '../slice/counterSlice'
@@ -37,7 +36,7 @@ export const store = configureStore({
 export type RootState = ReturnType<typeof store.getState>
 // Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
 export type AppDispatch = typeof store.dispatch`}
-      </Prism>
+      </CopyToClipboard>
       <p>configureStore() 會自動組合你的 reducer，並建立 Redux store。它會回傳一個 Redux store 物件，你可以使用它來呼叫 getState() 取得目前的 state，或是 dispatch(action) 來更新 state。</p>
       <p>而這邊新增的兩個部分則是RootState和AppDispatch，這兩個型別是用來幫助我們在使用Redux時，可以更方便的使用型別推論，而不用每次都要自己去宣告型別。</p>
       <p>而這邊的RootState則是用來取得目前的state，而AppDispatch則是用來dispatch action</p>
@@ -53,7 +52,7 @@ export type AppDispatch = typeof store.dispatch`}
 
       <p className="border border-title p-2 text-title font-bold">白話：自定義hook 這樣就可以在其他地方使用useAppDispatch和useAppSelector 同時使用前面的型別推論<br />
         可以確保我們使用useAppDispatch和useAppSelector的時候都只會使用到我們在store裡面定義的型別</p>
-      <Prism language="javascript" style={vscDarkPlus}>
+      <CopyToClipboard>
         {`// components/redux/hook/hook.tsx
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 import type { RootState, AppDispatch } from '../store/store'
@@ -61,13 +60,13 @@ import type { RootState, AppDispatch } from '../store/store'
 // Use throughout your app instead of plain \`useDispatch\` and \`useSelector\`
 export const useAppDispatch: () => AppDispatch = useDispatch
         export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector`}
-      </Prism>
+      </CopyToClipboard>
 
       <h1 className="text-3xl my-3">定義Slice State和Action Types​(Define Slice State and Action Types​)</h1>
       <p>現在，我們已經定義了RootState和AppDispatch類型，接下來我們要定義State、Action與reducer(當然做法會與舊版的不同)</p>
       <p className="text-xl text-title">首先是State</p>
       <p>我們宣告了兩個State，一個是計算器的State，一個是使用者的State，並且我們也都給予了初始值</p>
-      <Prism language="javascript" style={vscDarkPlus}>
+      <CopyToClipboard>
         {`// components/redux/state/stateType.tsx
 // Define a type for the slice state
 export interface CounterState {
@@ -91,7 +90,7 @@ export const userInitialState: UserState = {
     age: 0,
     email: ''
 }`}
-      </Prism>
+      </CopyToClipboard>
       <p className="text-xl text-title bg-black">接著是Slice(更改Reducer和Action的寫法)</p>
       <p>那因為我在前面 說要使用兩個reducer (兩個slice的意思) 所以我們這邊會寫兩個slice.tsx</p>
       <p>在 createSlice() 這個函式中可以帶入 reducer function、slice name 和 initial state，將自動產生對應的 slice reducer，並包含對應的 action creators 和 action types 在內。
@@ -107,18 +106,18 @@ export const userInitialState: UserState = {
 
       <p className="border border-title p-2 text-title font-bold">補充：必須「複製整個物件／陣列」然後再修改某一個值意思</p>
       <p>在傳統的 JavaScript 上，如果你想要修改一個物件裡面的某個值，必須先使用 Object.assign() 或是 spread operator (...) 這些方法複製一份全新的物件，然後再修改其中的屬性。例如：</p>
-      <Prism language="javascript" style={vscDarkPlus}>
+      <CopyToClipboard>
         {`// 這是一個簡單的物件
 const myObj = { a: 1, b: 2 };
 const newObj = Object.assign({}, myObj, {b: 3});
 // 或是 const newObj = {...myObj, b: 3};
 console.log(myObj); // {a: 1, b: 2}
 console.log(newObj); // {a: 1, b: 3}`}
-      </Prism>
+      </CopyToClipboard>
       <p>這樣做的問題在於，當物件變得很大時，複製整個物件會佔用大量的記憶體，並且容易導致效能問題。</p>
 
       <p>在使用 immer 時，你可以直接修改物件裡面的值，而不需要複製整個物件，例如：</p>
-      <Prism language="javascript" style={vscDarkPlus}>
+      <CopyToClipboard>
         {`import produce from 'immer';
 
 const myObj = { a: 1, b: 2 };
@@ -129,13 +128,13 @@ const newObject = produce(myObj, draft => {
 
 console.log(myObj); // { a: 1, b: 2 }
 console.log(newObject); // { a: 1, b: 3 }`}
-      </Prism>
+      </CopyToClipboard>
 
       <p>在上面的範例中，使用 produce() 函数從傳入的 state 物件創建一份 immutable 的複本（也就是 draft 物件），然後你可以直接修改 draft 物件裡面的屬性值，這樣就不需要額外地創建和更新新的物件了。</p>
 
       <p className="text-2xl border border-title p-2 text-title font-bold bg-black my-3">回歸到我們的主題</p>
       <p className="text-xl">第一個slice：counterSlice.tsx</p>
-      <Prism language="javascript" style={vscDarkPlus}>
+      <CopyToClipboard>
         {`// component/redux/slice/counterSlice.tsx
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { initialState } from "../state/stateType"
@@ -166,10 +165,10 @@ export const { increment, decrement, incrementByAmount } = counterSlice.actions
 export const selectCount = (state: RootState) => state.counterReducer.value
 
 export default counterSlice.reducer`}
-      </Prism>
+      </CopyToClipboard>
 
       <p className="text-xl">第二個slice：userSlice.tsx</p>
-      <Prism language="javascript" style={vscDarkPlus}>
+      <CopyToClipboard>
         {`// component/redux/slice/userSlice.tsx
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { userInitialState } from "../state/stateType"
@@ -198,13 +197,13 @@ export const selectAge = (state: RootState) => state.user.age
 export const selectEmail = (state: RootState) => state.user.email
 
 export default userSlice.reducer`}
-      </Prism>
+      </CopyToClipboard>
 
 
       <p>這樣就完成了，就可以透過useAppSelector來取得State的值了以及透過useAppDispatch來分發Action了</p>
 
       <p>你可以這樣使用，這邊就只顯示加與減的code，詳細的請點連結去看~</p>
-      <Prism language="javascript" style={vscDarkPlus}>
+      <CopyToClipboard>
         {`function Counter() {
 // const count = useAppSelector((state) => state.counterReducer.value)
 // 因為我們前面有建立好了selectCount，所以我們可以這樣使用
@@ -218,7 +217,7 @@ return (
         <button onClick={() => dispatch(decrement())}>-</button>
     </div>
 )}`}
-      </Prism>
+      </CopyToClipboard>
 
       <p>上面的範例與程式碼連結：</p>
       <a href="https://react-redux-example-01.vercel.app/" rel="noopener" target="_blank">體驗我們寫好的redux</a>
@@ -228,12 +227,12 @@ return (
       <p>這邊我們使用redux-thunk來處理非同步</p>
 
       <p className="text-xl text-title">首先是安裝，如果你有安裝toolkit就不用再安裝了</p>
-      <Prism language="javascript" style={vscDarkPlus}>
+      <CopyToClipboard>
         {`npm install redux-thunk`}
-      </Prism>
+      </CopyToClipboard>
 
       <p className="text-xl text-title">接著是修改store，但現在基本上預設都有thunk了，所以根本不用修改</p>
-      <Prism language="javascript" style={vscDarkPlus}>
+      <CopyToClipboard>
         {`// component/redux/store/store.tsx
 import { configureStore } from "@reduxjs/toolkit";
 import thunk from "redux-thunk";
@@ -251,7 +250,7 @@ export const store = configureStore({
       thunk: true
     })
 })`}
-      </Prism>
+      </CopyToClipboard>
 
       <p className="text-xl text-title">接著是寫一個非同步的action，我們會使用兩個API元件，一個是createAsyncThunk，一個是createSlice(然後加上extraReducers)</p>
       <p>createAsyncThunk可以協助我們管理異步的狀態，createAsyncThunk 接收兩個參數：typePrefix 和 payloadCreator。<br />
@@ -271,7 +270,7 @@ export const store = configureStore({
       <p className="border border-title p-2">addCase：添加一個可變 reducer，用於匹配指定 action type。
         最常用的方法，用於匹配指定的 action type，並對 state 進行更新。
       </p>
-      <Prism language="javascript" style={vscDarkPlus}>
+      <CopyToClipboard>
         {`const userSlice = createSlice({
   name: 'users',
   initialState: { users: [], userNames: [] },
@@ -282,7 +281,7 @@ export const store = configureStore({
     })
   }
 })`}
-      </Prism>
+      </CopyToClipboard>
       <p className="border border-title p-2">addMatcher：添加一個自定義 matcher 函數，用於匹配特定條件下的 action。
         addMatcher()可以用於針對特定條件下的action做出回應，例如當一個 action 的 payload 符合某些特定的條件時才進行相應的狀態更新。
         這意味著，相比使用addCase()，使用addMatcher()能夠更細粒度地控制 reducer 如何響應 action，從而使得代碼更加具有可讀性和可维護性。
@@ -291,7 +290,7 @@ export const store = configureStore({
         此時就可以利用addMatcher()函式根據action的payload來判斷是否需要對應處理：
         <a href="https://react-redux-example-02.vercel.app/User" rel="noopener" target="_blank">實作範例連結</a>
       </p>
-      <Prism language="javascript" style={vscDarkPlus}>
+      <CopyToClipboard>
         {`const userSlice = createSlice({
   name: 'users',
   initialState: { users: [], userNames: [] },
@@ -306,14 +305,14 @@ export const store = configureStore({
     )
   }
 })`}
-      </Prism>
+      </CopyToClipboard>
 
       <p className="border border-title p-2">addDefaultCase：添加一個默認的回傳語句，用於當創建的 reducer 未找到對應的 action type 時使用。
         addDefaultCase()可以用於當創建的 reducer 未找到對應的 action type 時使用，這個方法的參數是一個函數，該函數的參數是state和action，返回值是state。
         這個方法的用法和addCase()類似，但是它是用於處理所有未匹配到的action，因此它的優先級最低。
       </p>
 
-      <Prism language="javascript" style={vscDarkPlus}>
+      <CopyToClipboard>
         {`const userSlice = createSlice({
   name: 'users',
   initialState: { users: [], userNames: [] },
@@ -334,11 +333,11 @@ export const store = configureStore({
     })
   }
 })`}
-      </Prism>
+      </CopyToClipboard>
 
       <h1 className="text-3xl text-title">寫好的完整createAsyncThunk和createSlice如下：</h1>
 
-      <Prism language="javascript" style={vscDarkPlus}>
+      <CopyToClipboard>
         {`// component/redux/slice/asyncSlice.tsx
 import { createAsyncThunk, createSlice, Dispatch, PayloadAction } from "@reduxjs/toolkit"
 import { asyncInitialState } from "../state/stateType"
@@ -385,7 +384,7 @@ const asyncSlice = createSlice({
 export const selectAsync = (state: RootState) => state.async
 
 export default asyncSlice.reducer`}
-      </Prism>
+      </CopyToClipboard>
 
       <p>當然你必須修改State，要符合你的需求，完整版都在下方連結中。</p>
       <a href="https://react-redux-example-02.vercel.app/" rel="noopener" target="_blank">體驗我們寫好的redux</a>

@@ -1,8 +1,7 @@
 
 import Head from "next/head";
 import Layout from '../components/layout';
-import { Prism } from 'react-syntax-highlighter';
-import { vscDarkPlus } from 'react-syntax-highlighter/dist/cjs/styles/prism';
+import { CopyToClipboard } from "../components/Code/CopyToClipboard";
 
 const reduxDetail = () => {
   return (
@@ -55,7 +54,7 @@ const reduxDetail = () => {
       <h2>createSelector</h2>
       <p>Reselect 提供了一個名為 createSelector 的函數來生成記憶化 Selector。createSelector 接收一個或多個 input selector 函數，外加一個 output selector 作為參數，並返回一個新的 Selector 函數作為結果。</p>
       <p>直接舉例比較能夠理解：</p>
-      <Prism language="javascript" style={vscDarkPlus}>
+      <CopyToClipboard>
         {`const selectA = state => state.a
 const selectB = state => state.b
 const selectC = state => state.c
@@ -73,7 +72,7 @@ const selectABC2 = createSelector(selectA, selectB, selectC, (a, b, c) => {
   // 對 a、b 和 c 執行操作，並返回一個結果
   return a + b + c
 })`}
-      </Prism>
+      </CopyToClipboard>
 
     </Layout>
   )

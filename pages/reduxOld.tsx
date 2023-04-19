@@ -1,11 +1,10 @@
 
 import Head from "next/head";
 import Layout from '../components/layout';
-import { Prism } from 'react-syntax-highlighter';
-import { vscDarkPlus } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 import { useDispatch, useSelector } from "react-redux";
 import { ActionType } from "../components/redux/action/actionType";
 import { item } from "../components/redux/state/stateType";
+import { CopyToClipboard } from "../components/Code/CopyToClipboard";
 
 const reduxOld = () => {
 
@@ -39,44 +38,44 @@ const reduxOld = () => {
             <h3 className="text-2xl mb-3 mt-3">首先是State</h3>
             <p>State就是存放狀態的地方，它是一個物件，裡面可以放任何你想要的東西。</p>
             <p>這裡我宣告了一個State，裡面有一個itemList的陣列，而裡面只給存放item這個型別的物件</p>
-            <Prism language="javascript" style={vscDarkPlus}>
+            <CopyToClipboard>
                 {`export type state = {
     itemList: item[],
 } `}
-            </Prism>
+            </CopyToClipboard>
             <p>這裡我宣告了一個item的型別，裡面有name和price兩個屬性</p>
-            <Prism language="javascript" style={vscDarkPlus}>
+            <CopyToClipboard>
                 {`export type item = {
     name: string
     price: number,
 }`}
-            </Prism >
+            </CopyToClipboard >
             <p>那我還寫一個State的初始值，裡面的itemList是空的</p>
-            <Prism language="javascript" style={vscDarkPlus}>
+            <CopyToClipboard>
                 {`export const initialState: state = {
     itemList: []
 }`}
-            </Prism>
+            </CopyToClipboard>
 
             <h3 className="text-2xl mb-3 mt-3">接下來是Action</h3>
             <p>這裡我宣告了一個Action會執行的動作的名稱</p>
-            <Prism language="javascript" style={vscDarkPlus}>
+            <CopyToClipboard>
                 {`export enum ActionType {
     ADD_ITEM = 'ADD_ITEM',
     REMOVE_ITEM = 'REMOVE_ITEM',
 }`}
-            </Prism>
+            </CopyToClipboard>
             <p>之後在下面宣告了一個Action的型別，裡面有type和payload兩個屬性</p>
-            <Prism language="javascript" style={vscDarkPlus}>
+            <CopyToClipboard>
                 {`export interface action {
     type: ActionType;
     payload: any;
 }`}
-            </Prism>
+            </CopyToClipboard>
 
             <h3 className="text-2xl mb-3 mt-3">接著我們來寫action的規則，也就是reducer</h3>
             <p>我宣告了reducer function</p>
-            <Prism language="javascript" style={vscDarkPlus}>
+            <CopyToClipboard>
                 {`import { action, ActionType } from "../action/actionType";
 import { initialState, state } from "../state/stateType";
 
@@ -99,12 +98,12 @@ export const reducer = (state: state = initialState, action: action) => {
             return state;
     }
 }`}
-            </Prism>
+            </CopyToClipboard>
             <p className="border border-title p-2 text-title font-bold bg-black">值得一提的是redux是不允許直接修改state的，redux是immutable的，所以我們要用到...state，這個是展開運算子，它會把state的所有屬性都展開，這樣我們才能修改裡面的屬性。之後返回的會是一個新的state，這樣才能讓redux知道我們有修改state</p>
 
             <h3 className="text-2xl mb-3 mt-3">最後就是store</h3>
             <p>我們要把reducer和state放到store裡面，你可以在這邊去更改reducer的名稱，我這邊就更改成firstReducer，如果你有多個reducer的話，可以在這邊一起放進去</p>
-            <Prism language="javascript" style={vscDarkPlus}>
+            <CopyToClipboard>
                 {`import { configureStore } from "@reduxjs/toolkit";
 import thunk from "redux-thunk";
 import { reducer } from "../reducer/reducer";
@@ -119,7 +118,7 @@ const store = configureStore({
 });
 
 export default store;`}
-            </Prism>
+            </CopyToClipboard>
             <p>這樣就完成了，就可以使用useSelector來取得狀態，而透過store則可以使用useDispatch來更改狀態</p>
             <p>補充：如果你要使用非同步的action，可以使用redux-thunk，這裡我們在store裡面引入了thunk，所以可以在action裡面使用非同步的action</p>
             <p>因為redux-toolkit已經幫我們寫好了非同步的action，所以我們只要在action裡面使用createAsyncThunk就可以了</p>
@@ -128,7 +127,7 @@ export default store;`}
             <p>首先我們要先在pages/_app.tsx裡面引入Provider</p>
             <p>然後在return裡面包上Provider</p>
 
-            <Prism language="javascript" style={vscDarkPlus}>
+            <CopyToClipboard>
                 {`import { Provider } from 'react-redux';
 import '../styles/global.scss'
 import store from '../components/redux/store/store';
@@ -146,19 +145,19 @@ function App({ Component, pageProps }: AppProps) {
 }
 
 export default App`}
-            </Prism>
+            </CopyToClipboard>
 
             <p>接著就可以在我們想要的component裡面使用useSelector和useDispatch</p>
 
             <h3 className="text-2xl mb-3 mt-3">useSelector</h3>
             <p>useSelector可以取得我們在store裡面的state</p>
-            <Prism language="javascript" style={vscDarkPlus}>
+            <CopyToClipboard>
                 {`    const itemList = useSelector((state: any) => state.firstReducer.itemList);`}
-            </Prism>
+            </CopyToClipboard>
 
             <h3 className="text-2xl mb-3 mt-3">useDispatch</h3>
             <p>useDispatch可以更改我們在store裡面的state</p>
-            <Prism language="javascript" style={vscDarkPlus}>
+            <CopyToClipboard>
                 {`const dispatch = useDispatch();
 
 const addItem = (item: item) => {
@@ -170,19 +169,19 @@ const addItem = (item: item) => {
 }
 const removeItem = (name: string) => dispatch({ type: ActionType.REMOVE_ITEM, payload: name });
 `}
-            </Prism>
+            </CopyToClipboard>
 
             <h2 className="text-2xl mb-3 mt-3">完成的成品</h2>
 
             <p>使用一個button去觸發reducer的規則</p>
-            <Prism language="javascript" style={vscDarkPlus}>
+            <CopyToClipboard>
                 {`<button className="p-2 border rounded text-[#61dafb]"
     onClick={() => addItem({ name: '蘋果' + Math.random().toFixed(1), price: 10 })}>
     新增蘋果
 </button>`}
-            </Prism>
+            </CopyToClipboard>
             <p>再透過useSelector取得的state來顯示</p>
-            <Prism language="javascript" style={vscDarkPlus}>
+            <CopyToClipboard>
                 {` {
     itemList.map((item, index) => (
         <div key={index} className="flex justify-between items-center border p-1">
@@ -192,7 +191,7 @@ const removeItem = (name: string) => dispatch({ type: ActionType.REMOVE_ITEM, pa
         </div>
     ))
 }`}
-            </Prism>
+            </CopyToClipboard>
             <button className="p-2 border rounded text-[#61dafb]"
                 onClick={() => addItem({ name: '蘋果' + Math.random().toFixed(1), price: 10 })}>
                 新增蘋果
